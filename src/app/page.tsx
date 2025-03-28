@@ -2,7 +2,7 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { createAccount, login } from "./utils/DataServices";
+import { createAccount, getLoggedInUserData, login } from "./utils/DataServices";
 import { IToken } from "./utils/interfaces";
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
   const handleSwitch = () => {
     setSwitchBool(!switchBool);
   };
-  const handleSubmit =async () => {
+  const handleSubmit = async () => {
     let userData = {
       username: username,
       password: password,
@@ -32,6 +32,7 @@ export default function Home() {
         if(typeof window != null){
           localStorage.setItem("Token", token.token)
           console.log(token.token)
+          await getLoggedInUserData(username);
           router.push('/Dashboard')
         }else{
           alert("Login was no good Wrong Password or something");
